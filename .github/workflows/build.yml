@@ -1,14 +1,9 @@
 name: Build and Release Caddy
 
-# on:
-#   push:
-#     tags:
-#       - 'v*'
-
 on:
   push:
-    branches:
-      - main
+    tags:
+      - 'v*'
 
 jobs:
   build:
@@ -27,10 +22,10 @@ jobs:
         id: caddy-container
         run: |
           docker create --name temp-caddy caddy
-          echo "::set-output name=containerId::$(docker ps -aqf "name=temp-caddy")"
+          echo "containerId=$(docker ps -aqf "name=temp-caddy")" >> $GITHUB_ENV
 
       - name: Copy File from Container to Host
-        run: docker cp ${{ steps.caddy-container.outputs.containerId }}:/usr/bin/caddy .
+        run: docker cp ${{ env.containerId }}:/usr/bin/caddy .
 
       - name: Cleanup Container
         run: docker rm -f ${{ steps.caddy-container.outputs.containerId }}
