@@ -1,0 +1,19 @@
+name: Build and Release Caddy
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Caddy
+        run: docker build -t caddy .
+
+      - name: Check Image
+        run: docker images ls
