@@ -28,7 +28,7 @@ jobs:
         run: docker cp ${{ env.containerId }}:/usr/bin/caddy .
 
       - name: Cleanup Container
-        run: docker rm -f ${{ steps.caddy-container.outputs.containerId }}
+        run: docker rm ${{ steps.caddy-container.outputs.containerId }}
 
       - name: Release
         uses: softprops/action-gh-release@v2
