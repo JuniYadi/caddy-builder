@@ -22,3 +22,22 @@ jobs:
 
       - name: Check Image
         run: docker image ls
+
+      - name: Create Container from Image
+        id: caddy-container
+        run: |
+          docker create --name temp-caddy caddy
+          echo "::set-output name=containerId::$(docker ps -aqf "name=temp-caddy")"
+
+      - name: Copy File from Container to Host
+        run: docker cp ${{ steps.caddy-container.outputs.containerId }}:/usr/bin/caddy .
+
+      - name: Cleanup Container
+        run: docker rm -f ${{ steps.caddy-container.outputs.containerId }}
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            caddy
+            LICENSE
