@@ -16,4 +16,4 @@ jobs:
         run: docker build -t caddy .
 
       - name: Check Image
-        run: docker images ls
+        run: docker image ls
