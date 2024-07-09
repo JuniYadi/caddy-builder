@@ -18,17 +18,12 @@ jobs:
       - name: Check Image
         run: docker image ls
 
-      - name: Create Container from Image
+      - name: Copy binary from container
         id: caddy-container
         run: |
           docker create --name temp-caddy caddy
-          echo "containerId=$(docker ps -aqf "name=temp-caddy")" >> $GITHUB_ENV
-
-      - name: Copy File from Container to Host
-        run: docker cp ${{ env.containerId }}:/usr/bin/caddy .
-
-      - name: Cleanup Container
-        run: docker rm ${{ steps.caddy-container.outputs.containerId }}
+          docker cp temp-caddy:/usr/bin/caddy .
+          docker rm -f temp-caddy
 
       - name: Release
         uses: softprops/action-gh-release@v2
