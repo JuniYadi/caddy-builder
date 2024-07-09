@@ -1,9 +1,14 @@
 name: Build and Release Caddy
 
+# on:
+#   push:
+#     tags:
+#       - 'v*'
+
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
 
 jobs:
   build:
